@@ -1,34 +1,96 @@
 {#
-| Variable          | Type   | Description                                                      |
-|-------------------|--------|------------------------------------------------------------------|
-| title             | string | Section title                                                    |
-| items[]           | array  | List of images                                                   |
-| items[].url       | Bool   | Should set overlay on the background or not                      |
-| items[].link_type | string | category,product,offers,page,external_link,brand                 |
-| items[].image.url | string |                                                                  |
-| items[].image.alt | string |                                                                  |
-| items[].text      | string | Visible title for the photo                                      |
-| position          | Int    | Sorting number start from zero                                   |
+| Variable                    | Type     | Description        |
+|-----------------------------|----------|--------------------|
+| component                   | object   | Component settings |
+| component.photos            | object[] | List of photos     |
+| component.photos[].image    | string   | Image url          |
+| component.photos[].title    | ?string  | Category title     |
+| component.photos[].subtitle | ?string  | Products count     |
+| component.photos[].url      | ?string  | Link url           |
+| position                    | int      | Sorting number     |
 #}
-<section class="s-block s-block--banners container">
-    {% if title %}
-        <div class="s-block__title">
-            <div class="right-side">
-                <h2>{{ title }}</h2>
-            </div>
-        </div>
-    {% endif %}
 
-    <div class="grid {{ items|length <= 3 ? 'one-row md:grid-cols-' ~ items|length : 'md:grid-cols-3 two-row' }} grid-flow-row gap-3 sm:gap-8">
-        {% for item in items %}
-            <a class="banner-entry square-photos {{ item.text ? 'has-overlay with-hover' : '' }}" href="{{ item.url }}" {% if item.link_type == 'external_link' %}target="_blank"{% endif %}>
-                <div class="lazy__bg lazy bg-no-repeat" data-bg="{{ item.image.url }}"
-                style="background-size: {{ theme.settings.get('squar_photo_bg_image_size', 'contain') }};"
-                ></div>
-                {% if item.text %}
-                        <h3 class="text-with-border"><span>{{ item.text }}</span></h3> 
-                {% endif %}
-            </a>
-        {% endfor %}
+<style>
+  .sana-cats { padding: 40px 20px; background: #fff; }
+  .sana-cats .section-head {
+    display: flex; align-items: baseline;
+    justify-content: space-between; margin-bottom: 20px;
+  }
+  .sana-cats .section-title {
+    font-size: 18px; font-weight: 700; color: #1a1a1a;
+    position: relative; display: inline-block;
+  }
+  .sana-cats .section-title::after {
+    content: ''; display: block; width: 32px; height: 2px;
+    background: #b8966e; margin-top: 6px;
+  }
+  .sana-cats .see-all {
+    font-size: 11px; color: #b8966e;
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .sana-cats .see-all:hover { opacity: 0.75; }
+  .sana-cats .cats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .sana-cats .cat-card {
+    position: relative; border-radius: 4px;
+    overflow: hidden; cursor: pointer; display: block;
+    text-decoration: none;
+  }
+  .sana-cats .cat-card img {
+    width: 100%; height: 200px;
+    object-fit: cover; object-position: center;
+    display: block; transition: transform 0.45s ease;
+  }
+  .sana-cats .cat-card:hover img { transform: scale(1.07); }
+  .sana-cats .cat-gradient {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.20) 55%, transparent 100%);
+    transition: opacity 0.25s;
+  }
+  .sana-cats .cat-card:hover .cat-gradient { opacity: 0.85; }
+  .sana-cats .cat-info {
+    position: absolute; bottom: 14px;
+    right: 0; left: 0; text-align: center;
+    color: #fff; padding: 0 10px;
+  }
+  .sana-cats .cat-name {
+    font-size: 13px; font-weight: 600;
+    display: block; letter-spacing: 0.3px;
+  }
+  .sana-cats .cat-count {
+    font-size: 10px; color: #e8c88a;
+    display: block; margin-top: 3px;
+  }
+  @media (max-width: 1024px) {
+    .sana-cats .cats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .sana-cats .cat-card img { height: 140px; }
+  }
+</style>
+
+<section class="sana-cats s-block">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">تسوق حسب القسم</h2>
+      <a href="/collections" class="see-all">عرض الكل ←</a>
     </div>
+    <div class="cats-grid">
+      {% for photo in component.photos %}
+        <a href="{{ photo.url ?? '/collections' }}" class="cat-card">
+          <img src="{{ photo.image }}" alt="{{ photo.title }}" loading="lazy" />
+          <div class="cat-gradient"></div>
+          <div class="cat-info">
+            <span class="cat-name">{{ photo.title }}</span>
+            {% if photo.subtitle %}
+              <span class="cat-count">{{ photo.subtitle }}</span>
+            {% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
 </section>
