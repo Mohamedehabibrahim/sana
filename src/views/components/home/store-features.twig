@@ -1,22 +1,75 @@
 {#
-| Variable      | Type   | Description                                                      |
-|---------------|--------|------------------------------------------------------------------|
-| items[]       | array  | List of 3 features                                               |
-| items[].icon  | string | SallaIcons css class `sicon-*`                                   |
-| items[].title | string | Title of the feature                                             |
-| items[].text  | string | Subtitle for the feature                                         |
-| position      | Int    | Sorting number start from zero                                   |
+| Variable                      | Type     | Description        |
+|-------------------------------|----------|--------------------|
+| component                     | object   | Component settings |
+| component.features            | object[] | List of features   |
+| component.features[].icon     | string   | Icon url or emoji  |
+| component.features[].title    | string   | Feature title      |
+| component.features[].text     | ?string  | Feature desc       |
+| position                      | int      | Sorting number     |
 #}
-<section class="s-block s-block--features container">
-    <div class="grid grid-cols-[repeat(2,minmax(0,1fr))] md:grid-cols-[repeat(3,minmax(0,1fr))] gap-4 sm:gap-6 xl:gap-8">
-      {% for item in items %}
-          <div class="s-block--features__item">
-            <div class="feature-icon">
-              <i class="{{ item.icon }}"></i>
-            </div>
-            <h2>{{ item.title }}</h2>
-            <p>{{ item.text }}</p>
-          </div>
-      {% endfor %}
-    </div>
+
+<style>
+  .sana-trust { background: #fff; }
+  .sana-trust .trust-inner {
+    display: flex;
+    border-top: 0.5px solid #ede8e0;
+    border-bottom: 0.5px solid #ede8e0;
+  }
+  .sana-trust .trust-item {
+    flex: 1; display: flex; align-items: center;
+    gap: 12px; padding: 18px 20px;
+    border-left: 0.5px solid #ede8e0;
+    transition: background 0.25s;
+  }
+  .sana-trust .trust-item:last-child { border-left: none; }
+  .sana-trust .trust-item:hover { background: #faf9f7; }
+  .sana-trust .trust-icon {
+    width: 40px; height: 40px;
+    background: #f5efe6; border-radius: 50%;
+    display: flex; align-items: center;
+    justify-content: center; font-size: 18px; flex-shrink: 0;
+  }
+  .sana-trust .trust-text strong {
+    display: block; font-size: 12px;
+    color: #1a1a1a; font-weight: 600;
+  }
+  .sana-trust .trust-text span {
+    font-size: 10px; color: #666;
+  }
+  @media (max-width: 768px) {
+    .sana-trust .trust-inner { flex-wrap: wrap; }
+    .sana-trust .trust-item {
+      flex: 0 0 50%;
+      border-left: none;
+      border-bottom: 0.5px solid #ede8e0;
+    }
+  }
+</style>
+
+<section class="sana-trust s-block">
+  <div class="trust-inner">
+    {% for feature in component.features %}
+      <div class="trust-item">
+        <div class="trust-icon">
+          {% if feature.icon %}
+            <img src="{{ feature.icon }}" alt="" width="20" height="20" />
+          {% else %}
+            ✦
+          {% endif %}
+        </div>
+        <div class="trust-text">
+          <strong>{{ feature.title }}</strong>
+          {% if feature.text %}
+            <span>{{ feature.text }}</span>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="trust-item"><div class="trust-icon">🚚</div><div class="trust-text"><strong>شحن مجاني</strong><span>على الطلبات فوق 200 ر.س</span></div></div>
+      <div class="trust-item"><div class="trust-icon">↩️</div><div class="trust-text"><strong>إرجاع مجاني</strong><span>خلال 14 يوم</span></div></div>
+      <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-text"><strong>دفع آمن 100%</strong><span>جميع وسائل الدفع</span></div></div>
+      <div class="trust-item"><div class="trust-icon">💬</div><div class="trust-text"><strong>دعم 24/7</strong><span>نحن هنا لخدمتك</span></div></div>
+    {% endfor %}
+  </div>
 </section>
