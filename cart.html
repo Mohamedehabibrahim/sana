@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>سلة التسوق — سنا SANA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <style>
+    .breadcrumb { padding: 14px 20px; font-size: 11px; color: var(--text-muted); max-width: 1280px; margin: 0 auto; }
+    .breadcrumb a { color: var(--text-muted); } .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb span { margin: 0 6px; }
+
+    .cart-page { max-width: 1280px; margin: 0 auto; padding: 0 20px 60px; }
+    .cart-heading { font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 24px; }
+
+    .cart-layout { display: grid; grid-template-columns: 1fr 360px; gap: 28px; align-items: start; }
+
+    /* Cart Items */
+    .cart-items { background: var(--white); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .cart-items-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; padding: 14px 20px; background: var(--cream-2); font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 0.5px solid var(--border); }
+    .cart-item { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; align-items: center; padding: 18px 20px; border-bottom: 0.5px solid var(--border); transition: background var(--transition); }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item:hover { background: var(--cream); }
+
+    .item-product { display: flex; align-items: center; gap: 14px; }
+    .item-img { width: 72px; height: 72px; border-radius: var(--radius-md); overflow: hidden; flex-shrink: 0; background: var(--cream-2); }
+    .item-img img { width: 100%; height: 100%; object-fit: cover; }
+    .item-details {}
+    .item-name { font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 3px; }
+    .item-variant { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+    .item-remove { font-size: 11px; color: var(--text-light); cursor: pointer; transition: color var(--transition); background: none; border: none; font-family: var(--font-ar); padding: 0; }
+    .item-remove:hover { color: #c0392b; }
+
+    .item-price { font-size: 14px; font-weight: 600; color: var(--gold); }
+    .item-old { font-size: 11px; color: var(--text-light); text-decoration: line-through; }
+
+    .item-qty { display: flex; align-items: center; border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; width: fit-content; }
+    .item-qty-btn { width: 32px; height: 32px; background: var(--cream-2); border: none; font-size: 16px; cursor: pointer; color: var(--dark); font-family: var(--font-ar); transition: background var(--transition); }
+    .item-qty-btn:hover { background: var(--cream-3); }
+    .item-qty-val { width: 40px; height: 32px; text-align: center; font-size: 13px; font-weight: 600; border: none; border-right: 1px solid var(--border); border-left: 1px solid var(--border); font-family: var(--font-ar); color: var(--dark); background: var(--white); }
+
+    .item-total { font-size: 14px; font-weight: 700; color: var(--dark); }
+
+    /* Cart Footer */
+    .cart-footer { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--cream-2); border-top: 0.5px solid var(--border); }
+    .coupon-form { display: flex; gap: 8px; }
+    .coupon-input { padding: 9px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 12px; font-family: var(--font-ar); color: var(--dark); background: var(--white); width: 180px; }
+    .coupon-btn { background: var(--dark); color: var(--white); border: none; padding: 9px 18px; font-size: 12px; font-family: var(--font-ar); border-radius: var(--radius-sm); cursor: pointer; }
+    .continue-link { font-size: 12px; color: var(--gold); cursor: pointer; }
+    .continue-link:hover { text-decoration: underline; }
+
+    /* Order Summary */
+    .order-summary { background: var(--white); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 24px; position: sticky; top: 80px; }
+    .summary-title { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 20px; padding-bottom: 14px; border-bottom: 0.5px solid var(--border); }
+    .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .summary-label { font-size: 13px; color: var(--text-muted); }
+    .summary-value { font-size: 13px; color: var(--dark); font-weight: 500; }
+    .summary-value.free { color: #27ae60; font-weight: 600; }
+    .summary-value.discount { color: #c0392b; font-weight: 600; }
+    .summary-divider { border: none; border-top: 0.5px solid var(--border); margin: 14px 0; }
+    .summary-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .summary-total-label { font-size: 15px; font-weight: 700; color: var(--dark); }
+    .summary-total-value { font-size: 22px; font-weight: 700; color: var(--gold); }
+    .summary-vat { font-size: 10px; color: var(--text-muted); text-align: left; margin-bottom: 16px; }
+
+    .btn-checkout { width: 100%; background: var(--gold); color: var(--white); border: none; padding: 16px; font-size: 15px; font-family: var(--font-ar); font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition); margin-bottom: 10px; letter-spacing: 0.5px; }
+    .btn-checkout:hover { background: #a07c5a; }
+    .btn-continue-shop { width: 100%; background: transparent; color: var(--dark); border: 1px solid var(--border); padding: 13px; font-size: 13px; font-family: var(--font-ar); border-radius: var(--radius-sm); cursor: pointer; transition: all var(--transition); }
+    .btn-continue-shop:hover { border-color: var(--dark); }
+
+    .payment-icons { display: flex; justify-content: center; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 0.5px solid var(--border); }
+    .pay-icon { padding: 4px 10px; border: 0.5px solid var(--border); border-radius: 4px; font-size: 10px; font-weight: 700; color: var(--text-muted); background: var(--cream); }
+
+    .secure-note { text-align: center; font-size: 10px; color: var(--text-light); margin-top: 10px; }
+
+    /* Empty Cart */
+    .empty-cart { text-align: center; padding: 60px 20px; }
+    .empty-icon { font-size: 56px; margin-bottom: 16px; }
+    .empty-title { font-size: 20px; font-weight: 600; color: var(--dark); margin-bottom: 8px; }
+    .empty-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+
+    @media (max-width: 900px) {
+      .cart-layout { grid-template-columns: 1fr; }
+      .order-summary { position: static; }
+      .cart-items-header { display: none; }
+      .cart-item { grid-template-columns: 1fr 1fr; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announcement-bar">✦ شحن مجاني للطلبات فوق <span>200 ريال</span> &nbsp;|&nbsp; تسليم سريع خلال 24 ساعة ✦</div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo">سنا <span>•</span> SANA</a>
+      <nav class="nav-menu">
+        <a href="index.html">الرئيسية</a>
+        <a href="collection.html">ديكور المنزل</a>
+        <a href="collection.html">هدايا</a>
+        <a href="collection.html">إكسسوارات</a>
+        <a href="collection.html">شموع عطرية</a>
+        <a href="collection.html">العروض</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn">🔍</button><button class="icon-btn">👤</button><button class="icon-btn">🤍</button>
+        <button class="icon-btn" style="position:relative;">🛒<span class="cart-count">3</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="breadcrumb"><a href="index.html">الرئيسية</a><span>›</span><span>سلة التسوق</span></div>
+
+  <div class="cart-page">
+    <h1 class="cart-heading">سلة التسوق (3 منتجات)</h1>
+
+    <div class="cart-layout">
+
+      <!-- Items -->
+      <div>
+        <div class="cart-items">
+          <div class="cart-items-header">
+            <div>المنتج</div>
+            <div>السعر</div>
+            <div>الكمية</div>
+            <div>الإجمالي</div>
+          </div>
+
+          <!-- Item 1 -->
+          <div class="cart-item">
+            <div class="item-product">
+              <div class="item-img"><img src="https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=200&q=80" /></div>
+              <div class="item-details">
+                <div class="item-name">شمعة عطرية رويال</div>
+                <div class="item-variant">العطر: عود وورد</div>
+                <button class="item-remove" onclick="removeItem(this)">× حذف</button>
+              </div>
+            </div>
+            <div><div class="item-old">150</div><div class="item-price">120 ر.س</div></div>
+            <div class="item-qty">
+              <button class="item-qty-btn" onclick="changeItemQty(this,-1)">−</button>
+              <input class="item-qty-val" type="number" value="1" min="1" />
+              <button class="item-qty-btn" onclick="changeItemQty(this,1)">+</button>
+            </div>
+            <div class="item-total">120 ر.س</div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="cart-item">
+            <div class="item-product">
+              <div class="item-img"><img src="https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=200&q=80" /></div>
+              <div class="item-details">
+                <div class="item-name">بوكس هدايا بريميوم</div>
+                <div class="item-variant">الحجم: وسط</div>
+                <button class="item-remove" onclick="removeItem(this)">× حذف</button>
+              </div>
+            </div>
+            <div><div class="item-old">260</div><div class="item-price">220 ر.س</div></div>
+            <div class="item-qty">
+              <button class="item-qty-btn" onclick="changeItemQty(this,-1)">−</button>
+              <input class="item-qty-val" type="number" value="1" min="1" />
+              <button class="item-qty-btn" onclick="changeItemQty(this,1)">+</button>
+            </div>
+            <div class="item-total">220 ر.س</div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="cart-item">
+            <div class="item-product">
+              <div class="item-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&q=80" /></div>
+              <div class="item-details">
+                <div class="item-name">مجموعة إكسسوارات منزلية</div>
+                <div class="item-variant">اللون: ذهبي</div>
+                <button class="item-remove" onclick="removeItem(this)">× حذف</button>
+              </div>
+            </div>
+            <div><div class="item-price">175 ر.س</div></div>
+            <div class="item-qty">
+              <button class="item-qty-btn" onclick="changeItemQty(this,-1)">−</button>
+              <input class="item-qty-val" type="number" value="1" min="1" />
+              <button class="item-qty-btn" onclick="changeItemQty(this,1)">+</button>
+            </div>
+            <div class="item-total">175 ر.س</div>
+          </div>
+
+          <!-- Footer -->
+          <div class="cart-footer">
+            <div class="coupon-form">
+              <input class="coupon-input" type="text" placeholder="كوبون الخصم" />
+              <button class="coupon-btn">تطبيق</button>
+            </div>
+            <a href="collection.html" class="continue-link">← متابعة التسوق</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="order-summary">
+        <div class="summary-title">ملخص الطلب</div>
+
+        <div class="summary-row"><span class="summary-label">المجموع الفرعي</span><span class="summary-value">515 ر.س</span></div>
+        <div class="summary-row"><span class="summary-label">الخصم (كوبون SANA10)</span><span class="summary-value discount">- 51 ر.س</span></div>
+        <div class="summary-row"><span class="summary-label">الشحن</span><span class="summary-value free">مجاني 🎉</span></div>
+        <div class="summary-row"><span class="summary-label">ضريبة القيمة المضافة (15%)</span><span class="summary-value">69.6 ر.س</span></div>
+
+        <hr class="summary-divider" />
+
+        <div class="summary-total-row">
+          <span class="summary-total-label">الإجمالي</span>
+          <span class="summary-total-value">533.6 ر.س</span>
+        </div>
+        <div class="summary-vat">شامل ضريبة القيمة المضافة</div>
+
+        <button class="btn-checkout">إتمام الشراء ←</button>
+        <button class="btn-continue-shop" onclick="location.href='collection.html'">متابعة التسوق</button>
+
+        <div class="payment-icons">
+          <span class="pay-icon">Visa</span>
+          <span class="pay-icon">Mada</span>
+          <span class="pay-icon">STC Pay</span>
+          <span class="pay-icon">Apple Pay</span>
+        </div>
+        <div class="secure-note">🔒 دفع آمن ومشفر 100%</div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="site-logo">سنا <span style="color:#b8966e;">•</span> SANA</div><p>نقدم لك أرقى تشكيلة من مستلزمات المنزل والهدايا الفاخرة.</p></div>
+      <div class="footer-col"><h4>تسوق</h4><ul><li><a href="collection.html">ديكور المنزل</a></li><li><a href="collection.html">هدايا فاخرة</a></li></ul></div>
+      <div class="footer-col"><h4>خدمة العملاء</h4><ul><li><a href="static.html">تواصل معنا</a></li><li><a href="static.html">سياسة الإرجاع</a></li></ul></div>
+      <div class="footer-col"><h4>تابعنا</h4><ul><li><a href="#">إنستقرام</a></li><li><a href="#">سناب شات</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">© 2025 <span>سنا SANA</span> — جميع الحقوق محفوظة &nbsp;|&nbsp; مدعوم بـ سلة</div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+  <script>
+    function removeItem(btn) {
+      const row = btn.closest('.cart-item');
+      row.style.opacity = '0';
+      row.style.transform = 'translateX(20px)';
+      row.style.transition = 'all 0.3s ease';
+      setTimeout(() => row.remove(), 300);
+    }
+    function changeItemQty(btn, d) {
+      const input = btn.closest('.item-qty').querySelector('.item-qty-val');
+      input.value = Math.max(1, parseInt(input.value) + d);
+    }
+  </script>
+</body>
+</html>

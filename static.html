@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>من نحن — سنا SANA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <style>
+    .breadcrumb { padding: 14px 20px; font-size: 11px; color: var(--text-muted); max-width: 1280px; margin: 0 auto; }
+    .breadcrumb a { color: var(--text-muted); } .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* Page Nav Tabs */
+    .page-tabs { background: var(--white); border-bottom: 0.5px solid var(--border); }
+    .page-tabs-inner { max-width: 1280px; margin: 0 auto; padding: 0 20px; display: flex; gap: 0; overflow-x: auto; }
+    .page-tab { padding: 14px 22px; font-size: 13px; font-family: var(--font-ar); background: none; border: none; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all var(--transition); }
+    .page-tab:hover { color: var(--dark); }
+    .page-tab.active { color: var(--dark); border-bottom-color: var(--gold); font-weight: 600; }
+
+    .static-page { max-width: 900px; margin: 0 auto; padding: 40px 20px 60px; }
+
+    /* About Page */
+    .about-hero { position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 40px; height: 280px; }
+    .about-hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+    .about-hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.40); display: flex; align-items: center; justify-content: center; }
+    .about-hero-text { text-align: center; color: var(--white); }
+    .about-hero-text h1 { font-size: 32px; font-weight: 700; margin-bottom: 6px; }
+    .about-hero-text p { font-size: 14px; color: rgba(255,255,255,0.8); }
+
+    .about-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 36px 0; }
+    .value-card { background: var(--white); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 24px 20px; text-align: center; }
+    .value-icon { font-size: 32px; margin-bottom: 12px; }
+    .value-title { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+    .value-text { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 36px 0; }
+    .stat-item { background: var(--cream-2); border-radius: var(--radius-md); padding: 20px; text-align: center; }
+    .stat-num { font-size: 28px; font-weight: 700; color: var(--gold); display: block; }
+    .stat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block; }
+
+    /* Prose Content */
+    .prose { font-size: 14px; color: var(--text-muted); line-height: 1.9; }
+    .prose h2 { font-size: 18px; font-weight: 700; color: var(--dark); margin: 28px 0 12px; position: relative; display: inline-block; }
+    .prose h2::after { content: ''; display: block; width: 28px; height: 2px; background: var(--gold); margin-top: 5px; }
+    .prose p { margin-bottom: 16px; }
+    .prose ul { padding-right: 20px; margin-bottom: 16px; }
+    .prose ul li { margin-bottom: 8px; list-style: disc; }
+    .prose strong { color: var(--dark); font-weight: 600; }
+    .prose .highlight { background: var(--gold-pale); border-right: 3px solid var(--gold); padding: 14px 18px; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 20px 0; font-size: 13px; color: var(--dark); }
+
+    /* Contact Form */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 28px; }
+    .contact-info {}
+    .contact-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+    .contact-icon { width: 40px; height: 40px; background: var(--gold-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .contact-detail strong { display: block; font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 3px; }
+    .contact-detail span { font-size: 12px; color: var(--text-muted); }
+
+    .contact-form {}
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--dark); margin-bottom: 6px; }
+    .form-input, .form-textarea, .form-select { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; font-family: var(--font-ar); color: var(--dark); background: var(--white); transition: border-color var(--transition); outline: none; }
+    .form-input:focus, .form-textarea:focus { border-color: var(--gold); }
+    .form-textarea { height: 120px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* 404 page */
+    .page-404 { text-align: center; padding: 80px 20px; }
+    .err-code { font-size: 96px; font-weight: 700; color: var(--gold); line-height: 1; opacity: 0.4; }
+    .err-title { font-size: 24px; font-weight: 700; color: var(--dark); margin: 12px 0 8px; }
+    .err-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+    .err-actions { display: flex; gap: 12px; justify-content: center; }
+
+    @media (max-width: 768px) {
+      .about-values { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announcement-bar">✦ شحن مجاني للطلبات فوق <span>200 ريال</span> &nbsp;|&nbsp; تسليم سريع خلال 24 ساعة ✦</div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo">سنا <span>•</span> SANA</a>
+      <nav class="nav-menu">
+        <a href="index.html">الرئيسية</a>
+        <a href="collection.html">ديكور المنزل</a>
+        <a href="collection.html">هدايا</a>
+        <a href="collection.html">إكسسوارات</a>
+        <a href="collection.html">شموع عطرية</a>
+        <a href="collection.html">العروض</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn">🔍</button><button class="icon-btn">👤</button><button class="icon-btn">🤍</button>
+        <button class="icon-btn" style="position:relative;">🛒<span class="cart-count">3</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="breadcrumb"><a href="index.html">الرئيسية</a><span>›</span><span id="bc-text">من نحن</span></div>
+
+  <!-- Page Navigation Tabs -->
+  <div class="page-tabs">
+    <div class="page-tabs-inner">
+      <button class="page-tab active" onclick="showPage('about',this)">من نحن</button>
+      <button class="page-tab" onclick="showPage('shipping',this)">الشحن والتوصيل</button>
+      <button class="page-tab" onclick="showPage('returns',this)">سياسة الإرجاع</button>
+      <button class="page-tab" onclick="showPage('contact',this)">تواصل معنا</button>
+      <button class="page-tab" onclick="showPage('faq',this)">الأسئلة الشائعة</button>
+    </div>
+  </div>
+
+  <!-- ══ ABOUT ══ -->
+  <div id="page-about" class="static-page">
+    <div class="about-hero">
+      <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=85" alt="من نحن" />
+      <div class="about-hero-overlay">
+        <div class="about-hero-text">
+          <h1>قصتنا</h1>
+          <p>نؤمن أن المنزل الجميل يبدأ من التفاصيل الصغيرة</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>سنا هو أكثر من مجرد متجر — هو وجهة لكل من يؤمن أن الجمال يسكن في التفاصيل. بدأنا رحلتنا من شغف حقيقي بالديكور الفاخر ومستلزمات المنزل الراقية، لنقدم لك تشكيلة مختارة بعناية فائقة تعكس الأناقة والجودة في كل قطعة.</p>
+      <div class="highlight">✦ كل منتج في متجرنا يمر بمعايير اختيار صارمة — لا نبيع إلا ما نؤمن فعلاً بجودته.</div>
+    </div>
+
+    <div class="about-values">
+      <div class="value-card"><div class="value-icon">✨</div><div class="value-title">الجودة أولاً</div><div class="value-text">نختار كل منتج بعناية شديدة، لا نتنازل عن الجودة مهما كان السعر</div></div>
+      <div class="value-card"><div class="value-icon">🎁</div><div class="value-title">تجربة فاخرة</div><div class="value-text">من التغليف للتوصيل، كل لحظة معنا مصممة لتبهجك</div></div>
+      <div class="value-card"><div class="value-icon">💛</div><div class="value-title">خدمة من القلب</div><div class="value-text">فريقنا دايماً موجود لخدمتك قبل وبعد الشراء</div></div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item"><span class="stat-num">+5000</span><span class="stat-lbl">عميل سعيد</span></div>
+      <div class="stat-item"><span class="stat-num">+300</span><span class="stat-lbl">منتج فاخر</span></div>
+      <div class="stat-item"><span class="stat-num">4.9</span><span class="stat-lbl">متوسط التقييم</span></div>
+      <div class="stat-item"><span class="stat-num">3</span><span class="stat-lbl">سنوات خبرة</span></div>
+    </div>
+  </div>
+
+  <!-- ══ SHIPPING ══ -->
+  <div id="page-shipping" class="static-page" style="display:none;">
+    <h1 class="section-title">الشحن والتوصيل</h1>
+    <div class="prose">
+      <h2>مناطق التوصيل</h2>
+      <p>نوصل لجميع مناطق المملكة العربية السعودية عبر شركات شحن موثوقة.</p>
+      <h2>مدة التوصيل</h2>
+      <ul>
+        <li><strong>الرياض وجدة والدمام:</strong> 1 — 2 يوم عمل</li>
+        <li><strong>باقي مناطق المملكة:</strong> 3 — 5 أيام عمل</li>
+        <li><strong>المناطق النائية:</strong> قد يصل إلى 7 أيام عمل</li>
+      </ul>
+      <h2>تكلفة الشحن</h2>
+      <div class="highlight">✦ شحن مجاني لجميع الطلبات التي تتجاوز 200 ريال سعودي.</div>
+      <p>للطلبات دون 200 ريال، تكلفة الشحن 25 ريال سعودي.</p>
+      <h2>تغليف الهدايا</h2>
+      <p>نقدم خدمة تغليف الهدايا الفاخرة مجاناً عند الطلب. فقط اختر هذا الخيار عند إتمام عملية الشراء.</p>
+    </div>
+  </div>
+
+  <!-- ══ RETURNS ══ -->
+  <div id="page-returns" class="static-page" style="display:none;">
+    <h1 class="section-title">سياسة الإرجاع والاستبدال</h1>
+    <div class="prose">
+      <div class="highlight">✦ إرجاع مجاني خلال 14 يوم من تاريخ الاستلام — بدون أسئلة.</div>
+      <h2>شروط الإرجاع</h2>
+      <ul>
+        <li>المنتج في حالته الأصلية غير مستخدم</li>
+        <li>التغليف الأصلي سليم</li>
+        <li>خلال 14 يوم من تاريخ الاستلام</li>
+        <li>مع إرفاق فاتورة الشراء</li>
+      </ul>
+      <h2>خطوات الإرجاع</h2>
+      <ul>
+        <li>تواصل معنا عبر الواتساب أو البريد الإلكتروني</li>
+        <li>أخبرنا برقم الطلب وسبب الإرجاع</li>
+        <li>سنرسل لك مندوب الاستلام مجاناً</li>
+        <li>يتم رد المبلغ خلال 3 — 5 أيام عمل</li>
+      </ul>
+      <h2>استثناءات</h2>
+      <p>لا يمكن إرجاع المنتجات المخصصة والمُطبَّعة بالاسم أو التصميم الخاص بطلب العميل.</p>
+    </div>
+  </div>
+
+  <!-- ══ CONTACT ══ -->
+  <div id="page-contact" class="static-page" style="display:none;">
+    <h1 class="section-title">تواصل معنا</h1>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item"><div class="contact-icon">📱</div><div class="contact-detail"><strong>واتساب</strong><span>+966 5X XXX XXXX</span></div></div>
+        <div class="contact-item"><div class="contact-icon">📧</div><div class="contact-detail"><strong>البريد الإلكتروني</strong><span>hello@sana.sa</span></div></div>
+        <div class="contact-item"><div class="contact-icon">🕐</div><div class="contact-detail"><strong>أوقات العمل</strong><span>السبت — الخميس، 9 ص — 10 م</span></div></div>
+        <div class="contact-item"><div class="contact-icon">📸</div><div class="contact-detail"><strong>إنستقرام</strong><span>@sana.store</span></div></div>
+      </div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">الاسم</label><input class="form-input" type="text" placeholder="اسمك الكريم" /></div>
+          <div class="form-group"><label class="form-label">رقم الجوال</label><input class="form-input" type="tel" placeholder="05XXXXXXXX" /></div>
+        </div>
+        <div class="form-group"><label class="form-label">موضوع الرسالة</label>
+          <select class="form-select">
+            <option>استفسار عن منتج</option>
+            <option>طلب موجود</option>
+            <option>إرجاع أو استبدال</option>
+            <option>شكوى أو اقتراح</option>
+            <option>أخرى</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">رسالتك</label><textarea class="form-textarea" placeholder="اكتب رسالتك هنا..."></textarea></div>
+        <button class="btn-gold" style="width:100%;padding:13px;font-size:14px;">إرسال الرسالة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FAQ ══ -->
+  <div id="page-faq" class="static-page" style="display:none;">
+    <h1 class="section-title">الأسئلة الشائعة</h1>
+    <div class="prose">
+      <h2>هل الشحن مجاني؟</h2>
+      <p>نعم! الشحن مجاني لجميع الطلبات التي تتجاوز 200 ريال سعودي. للطلبات الأقل، رسوم الشحن 25 ريال.</p>
+      <h2>كم تستغرق عملية التوصيل؟</h2>
+      <p>داخل الرياض وجدة والدمام: 1 — 2 يوم عمل. باقي مناطق المملكة: 3 — 5 أيام عمل.</p>
+      <h2>هل يمكنني إرجاع المنتج؟</h2>
+      <p>بالتأكيد! نقبل الإرجاع المجاني خلال 14 يوم من الاستلام، بشرط أن يكون المنتج في حالته الأصلية.</p>
+      <h2>هل تقدمون خدمة تغليف الهدايا؟</h2>
+      <p>نعم، نقدم تغليف هدايا فاخر مجاناً. اختر الخيار عند إتمام الشراء أو تواصل معنا.</p>
+      <h2>ما هي طرق الدفع المتاحة؟</h2>
+      <p>نقبل: فيزا، ماستركارد، مدى، Apple Pay، STC Pay، وتحويل بنكي.</p>
+      <h2>هل منتجاتكم أصلية؟</h2>
+      <p>بالتأكيد 100%. جميع منتجاتنا أصلية ومضمونة، ونتحمل مسؤولية جودة كل ما نبيعه.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="site-logo">سنا <span style="color:#b8966e;">•</span> SANA</div><p>نقدم لك أرقى تشكيلة من مستلزمات المنزل والهدايا الفاخرة.</p></div>
+      <div class="footer-col"><h4>تسوق</h4><ul><li><a href="collection.html">ديكور المنزل</a></li><li><a href="collection.html">هدايا فاخرة</a></li></ul></div>
+      <div class="footer-col"><h4>خدمة العملاء</h4><ul><li><a href="#">تواصل معنا</a></li><li><a href="#">سياسة الإرجاع</a></li></ul></div>
+      <div class="footer-col"><h4>تابعنا</h4><ul><li><a href="#">إنستقرام</a></li><li><a href="#">سناب شات</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">© 2025 <span>سنا SANA</span> — جميع الحقوق محفوظة &nbsp;|&nbsp; مدعوم بـ سلة</div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+  <script>
+    const pages = ['about','shipping','returns','contact','faq'];
+    const labels = {about:'من نحن',shipping:'الشحن والتوصيل',returns:'سياسة الإرجاع',contact:'تواصل معنا',faq:'الأسئلة الشائعة'};
+    function showPage(id, btn) {
+      pages.forEach(p => document.getElementById('page-'+p).style.display = p===id ? 'block' : 'none');
+      document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('bc-text').textContent = labels[id];
+    }
+  </script>
+</body>
+</html>

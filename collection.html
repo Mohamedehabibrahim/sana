@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>شموع عطرية — سنا SANA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <style>
+    .collection-hero { position: relative; height: 220px; overflow: hidden; }
+    .collection-hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+    .collection-hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; color: var(--white); }
+    .collection-hero-overlay h1 { font-size: 32px; font-weight: 700; margin-bottom: 6px; }
+    .collection-hero-overlay p { font-size: 13px; color: rgba(255,255,255,0.8); }
+
+    .breadcrumb { padding: 14px 20px; font-size: 11px; color: var(--text-muted); max-width: 1280px; margin: 0 auto; }
+    .breadcrumb a { color: var(--text-muted); } .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb span { margin: 0 6px; color: var(--text-light); }
+
+    .collection-layout { max-width: 1280px; margin: 0 auto; padding: 0 20px 60px; display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; }
+
+    /* Sidebar Filters */
+    .filters-sidebar { position: sticky; top: 80px; background: var(--white); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+    .filter-title { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; }
+    .filter-clear { font-size: 11px; color: var(--gold); cursor: pointer; font-weight: 400; }
+    .filter-group { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 0.5px solid var(--border); }
+    .filter-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .filter-group-title { font-size: 12px; font-weight: 600; color: var(--dark); margin-bottom: 12px; }
+    .filter-option { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; cursor: pointer; }
+    .filter-option input[type="checkbox"] { accent-color: var(--gold); width: 14px; height: 14px; cursor: pointer; }
+    .filter-option label { font-size: 12px; color: var(--text-muted); cursor: pointer; flex: 1; }
+    .filter-option .count { font-size: 10px; color: var(--text-light); }
+    .price-range { display: flex; gap: 8px; align-items: center; }
+    .price-input { width: 80px; padding: 7px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 12px; font-family: var(--font-ar); color: var(--dark); }
+    .price-sep { font-size: 11px; color: var(--text-muted); }
+    .btn-apply { width: 100%; margin-top: 10px; background: var(--dark); color: var(--white); border: none; padding: 9px; font-size: 12px; font-family: var(--font-ar); border-radius: var(--radius-sm); cursor: pointer; }
+
+    /* Products Area */
+    .products-area {}
+    .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 12px 16px; background: var(--white); border: 0.5px solid var(--border); border-radius: var(--radius-md); }
+    .results-count { font-size: 12px; color: var(--text-muted); }
+    .results-count strong { color: var(--dark); }
+    .toolbar-right { display: flex; align-items: center; gap: 12px; }
+    .sort-select { border: 1px solid var(--border); padding: 7px 12px; font-size: 12px; font-family: var(--font-ar); color: var(--dark); border-radius: var(--radius-sm); background: var(--white); cursor: pointer; }
+    .view-toggle { display: flex; gap: 4px; }
+    .view-btn { width: 32px; height: 32px; background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all var(--transition); }
+    .view-btn.active { background: var(--dark); color: var(--white); border-color: var(--dark); }
+
+    .collection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+
+    /* Pagination */
+    .pagination { display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .page-btn { width: 36px; height: 36px; border: 1px solid var(--border); background: var(--white); border-radius: var(--radius-sm); font-size: 13px; font-family: var(--font-ar); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all var(--transition); }
+    .page-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .page-btn.active { background: var(--dark); color: var(--white); border-color: var(--dark); }
+    .page-btn.arrow { font-size: 16px; }
+
+    @media (max-width: 900px) {
+      .collection-layout { grid-template-columns: 1fr; }
+      .filters-sidebar { position: static; }
+      .collection-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announcement-bar">✦ شحن مجاني للطلبات فوق <span>200 ريال</span> &nbsp;|&nbsp; تسليم سريع خلال 24 ساعة ✦</div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo">سنا <span>•</span> SANA</a>
+      <nav class="nav-menu">
+        <a href="index.html">الرئيسية</a>
+        <a href="collection.html">ديكور المنزل</a>
+        <a href="collection.html">هدايا</a>
+        <a href="collection.html">إكسسوارات</a>
+        <a href="collection.html" style="color:var(--dark);font-weight:600;">شموع عطرية</a>
+        <a href="collection.html">العروض</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn">🔍</button><button class="icon-btn">👤</button><button class="icon-btn">🤍</button>
+        <button class="icon-btn" style="position:relative;">🛒<span class="cart-count">3</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Collection Hero -->
+  <div class="collection-hero">
+    <img src="https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=1400&q=85" alt="شموع عطرية" />
+    <div class="collection-hero-overlay">
+      <h1>شموع عطرية</h1>
+      <p>تشكيلة مختارة من الشموع الفاخرة لتضيء منزلك بأجمل العطور</p>
+    </div>
+  </div>
+
+  <div class="breadcrumb"><a href="index.html">الرئيسية</a><span>›</span><span>شموع عطرية</span></div>
+
+  <div class="collection-layout">
+
+    <!-- Filters -->
+    <aside class="filters-sidebar">
+      <div class="filter-title">تصفية <span class="filter-clear">مسح الكل</span></div>
+
+      <div class="filter-group">
+        <div class="filter-group-title">العطر</div>
+        <div class="filter-option"><input type="checkbox" id="f1" checked/><label for="f1">عود وورد</label><span class="count">(12)</span></div>
+        <div class="filter-option"><input type="checkbox" id="f2"/><label for="f2">مسك وعنبر</label><span class="count">(8)</span></div>
+        <div class="filter-option"><input type="checkbox" id="f3"/><label for="f3">لافندر</label><span class="count">(6)</span></div>
+        <div class="filter-option"><input type="checkbox" id="f4"/><label for="f4">فانيليا</label><span class="count">(5)</span></div>
+        <div class="filter-option"><input type="checkbox" id="f5"/><label for="f5">برغموت</label><span class="count">(4)</span></div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group-title">السعر</div>
+        <div class="price-range">
+          <input class="price-input" type="number" placeholder="من" value="0" />
+          <span class="price-sep">—</span>
+          <input class="price-input" type="number" placeholder="إلى" value="500" />
+        </div>
+        <button class="btn-apply">تطبيق</button>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group-title">التقييم</div>
+        <div class="filter-option"><input type="checkbox" id="r5"/><label for="r5">★★★★★ فقط</label></div>
+        <div class="filter-option"><input type="checkbox" id="r4"/><label for="r4">★★★★ وأكثر</label></div>
+        <div class="filter-option"><input type="checkbox" id="r3"/><label for="r3">★★★ وأكثر</label></div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group-title">الحالة</div>
+        <div class="filter-option"><input type="checkbox" id="sale"/><label for="sale">عروض وخصومات</label></div>
+        <div class="filter-option"><input type="checkbox" id="new"/><label for="new">جديد</label></div>
+      </div>
+    </aside>
+
+    <!-- Products -->
+    <div class="products-area">
+      <div class="toolbar">
+        <div class="results-count">عرض <strong>32</strong> منتج</div>
+        <div class="toolbar-right">
+          <select class="sort-select">
+            <option>الأكثر مبيعاً</option>
+            <option>السعر: من الأقل</option>
+            <option>السعر: من الأعلى</option>
+            <option>الأحدث</option>
+            <option>الأعلى تقييماً</option>
+          </select>
+          <div class="view-toggle">
+            <button class="view-btn active">⊞</button>
+            <button class="view-btn">☰</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-grid">
+        <div class="product-card"><div class="product-img-wrap"><img src="https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=400&q=80" loading="lazy"/><span class="product-badge">-20%</span><button class="product-fav">♡</button><button class="product-quick-add">أضف للسلة</button></div><div class="product-info"><div class="product-name">شمعة عطرية رويال</div><div class="product-brand">SANA HOME</div><div class="product-stars">★★★★★ <span>(48)</span></div><div class="price-row"><div><span class="product-old-price">150</span><span class="product-price">120 ر.س</span></div></div></div></div>
+
+        <div class="product-card"><div class="product-img-wrap"><img src="https://images.unsplash.com/photo-1612196808214-b7e239e5f5a4?w=400&q=80" loading="lazy"/><span class="product-badge badge-new">جديد</span><button class="product-fav">♡</button><button class="product-quick-add">أضف للسلة</button></div><div class="product-info"><div class="product-name">شمعة كريستال مضيئة</div><div class="product-brand">SANA HOME</div><div class="product-stars">★★★★★ <span>(31)</span></div><div class="price-row"><span class="product-price">95 ر.س</span></div></div></div>
+
+        <div class="product-card"><div class="product-img-wrap"><img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&q=80" loading="lazy"/><button class="product-fav">♡</button><button class="product-quick-add">أضف للسلة</button></div><div class="product-info"><div class="product-name">شمعة ورد دمشقي</div><div class="product-brand">SANA HOME</div><div class="product-stars">★★★★☆ <span>(19)</span></div><div class="price-row"><span class="product-price">85 ر.س</span></div></div></div>
+
+        <div class="product-card"><div class="product-img-wrap"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" loading="lazy"/><span class="product-badge badge-sale">-30%</span><button class="product-fav active">♥</button><button class="product-quick-add">أضف للسلة</button></div><div class="product-info"><div class="product-name">طقم شموع فاخر 3 قطع</div><div class="product-brand">SANA HOME</div><div class="product-stars">★★★★★ <span>(62)</span></div><div class="price-row"><div><span class="product-old-price">270</span><span class="product-price">189 ر.س</span></div></div></div></div>
+
+        <div class="product-card"><div class="product-img-wrap"><img src="https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=400&q=80" loading="lazy"/><button class="product-fav">♡</button><button class="product-quick-add">أضف للسلة</button></div><div class="product-info"><div class="product-name">شمعة مسك الليل</div><div class="product-brand">SANA HOME</div><div class="product-stars">★★★★★ <span>(27)</span></div><div class="price-row"><span class="product-price">110 ر.س</span></div></div></div>
+
+        <div class="product-card"><div class="product-img-wrap"><img src="https://images.unsplash.com/photo-1612196808214-b7e239e5f5a4?w=400&q=80" loading="lazy"/><span class="product-badge badge-new">جديد</span><button class="product-fav">♡</button><button class="product-quick-add">أضف للسلة</button></div><div class="product-info"><div class="product-name">شمعة أمبر دافئ</div><div class="product-brand">SANA HOME</div><div class="product-stars">★★★★☆ <span>(14)</span></div><div class="price-row"><span class="product-price">75 ر.س</span></div></div></div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button class="page-btn arrow">›</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">4</button>
+        <button class="page-btn arrow">‹</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="trust-bar">
+    <div class="trust-item"><div class="trust-icon">🚚</div><div class="trust-text"><strong>شحن مجاني</strong><span>على الطلبات فوق 200 ر.س</span></div></div>
+    <div class="trust-item"><div class="trust-icon">↩️</div><div class="trust-text"><strong>إرجاع مجاني</strong><span>خلال 14 يوم</span></div></div>
+    <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-text"><strong>دفع آمن 100%</strong><span>جميع وسائل الدفع مقبولة</span></div></div>
+    <div class="trust-item"><div class="trust-icon">💬</div><div class="trust-text"><strong>دعم 24/7</strong><span>نحن هنا دايماً لخدمتك</span></div></div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="site-logo">سنا <span style="color:#b8966e;">•</span> SANA</div><p>نقدم لك أرقى تشكيلة من مستلزمات المنزل والهدايا الفاخرة.</p></div>
+      <div class="footer-col"><h4>تسوق</h4><ul><li><a href="collection.html">ديكور المنزل</a></li><li><a href="collection.html">هدايا فاخرة</a></li><li><a href="collection.html">شموع عطرية</a></li></ul></div>
+      <div class="footer-col"><h4>خدمة العملاء</h4><ul><li><a href="static.html">تواصل معنا</a></li><li><a href="static.html">سياسة الإرجاع</a></li></ul></div>
+      <div class="footer-col"><h4>تابعنا</h4><ul><li><a href="#">إنستقرام</a></li><li><a href="#">سناب شات</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">© 2025 <span>سنا SANA</span> — جميع الحقوق محفوظة &nbsp;|&nbsp; مدعوم بـ سلة</div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+</body>
+</html>
