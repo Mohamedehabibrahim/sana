@@ -1,33 +1,101 @@
 {#
-| Variable                       | Type     | Description                                                                  |
-|--------------------------------|----------|------------------------------------------------------------------------------|
-| component                      | object   | Contains merchant settings for fields from twilight.json `component` section |
-| component.slides[].image       | string   | Image url                                                                    |
-| component.slides[].title       | ?string  |                                                                              |
-| component.slides[].description | ?string  |                                                                              |
-| component.slides               | object[] | list of slides                                                               |
-| position                       | int      | Sorting number start from zero                                               |
+| Variable                      | Type     | Description                                                              |
+|-------------------------------|----------|--------------------------------------------------------------------------|
+| component                     | object   | Contains merchant settings for fields from twilight.json `component` section |
+| component.slides[].image      | string   | Image url                                                                |
+| component.slides[].title      | ?string  |                                                                          |
+| component.slides[].description| ?string  |                                                                          |
+| component.slides              | object[] | list of slides                                                           |
+| position                      | int      | Sorting number start from zero                                           |
 #}
-<section class="s-block s-block--hero-slider s-block--full-bg wide-placeholder"> 
-    <salla-slider 
-      id="main-slider-{{ position }}"
-      auto-play
-      static-when-single
-      slider-config='{"lazy":"false"}'
-      {{ component.slides|length > 1 ? '' : 'show-controls="false"' }}
-      type="fullwidth">
-        <div slot="items">
-            {% for slide in component.slides %}
-                <div class="swiper-slide w-full min-h-[300px] lg:min-h-[528px] bg-dark relative">
-					<div style="background-image: url({{ slide.image }});" class="{{ slide.without_overlay ? '' : 'overlay-bg' }} bg-cover bg-center absolute inset-0"></div>
-                    <div class="flex-center container pb-16 sm:pb-0 home-slider__content relative h-full">
-                        <div class=" w-4/6 text-center md:w-7/12 lg:w-5/12 text-white">
-                            <h2 data-swiper-parallax="-500" class="lg:text-title-size font-bold leading-tight mb-4">{{ slide.title }}</h2>
-                            <p data-swiper-parallax="-300" class="line-clamp-2 description">{{ slide.description }}</p>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+
+<style>
+  .sana-hero { position: relative; overflow: hidden; }
+  .sana-hero .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to left, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.25) 55%, rgba(0,0,0,0.05) 100%);
+    z-index: 1;
+  }
+  .sana-hero .hero-content {
+    position: absolute; top: 50%; right: 7%;
+    transform: translateY(-50%);
+    z-index: 2; color: #fff; text-align: right; max-width: 440px;
+    animation: sanaFadeIn 0.9s ease both;
+  }
+  @keyframes sanaFadeIn {
+    from { opacity: 0; transform: translateY(calc(-50% + 24px)); }
+    to   { opacity: 1; transform: translateY(-50%); }
+  }
+  .sana-hero .hero-eyebrow {
+    font-size: 10px; letter-spacing: 4px; color: #e8c88a;
+    margin-bottom: 14px; text-transform: uppercase;
+  }
+  .sana-hero .hero-title {
+    font-size: 38px; font-weight: 700; line-height: 1.25;
+    margin-bottom: 14px; color: #fff;
+  }
+  .sana-hero .hero-title em { color: #e8c88a; font-style: normal; }
+  .sana-hero .hero-desc {
+    font-size: 14px; color: rgba(255,255,255,0.80);
+    line-height: 1.7; margin-bottom: 26px;
+  }
+  .sana-hero .hero-actions { display: flex; gap: 12px; justify-content: flex-end; }
+  .sana-hero .btn-gold {
+    background: #b8966e; color: #fff; border: none;
+    padding: 11px 26px; font-size: 13px; letter-spacing: 1px;
+    border-radius: 2px; cursor: pointer;
+    transition: background 0.25s;
+  }
+  .sana-hero .btn-gold:hover { background: #a07c5a; }
+  .sana-hero .btn-outline-w {
+    background: transparent; color: #fff;
+    border: 1px solid rgba(255,255,255,0.7);
+    padding: 10px 22px; font-size: 13px;
+    border-radius: 2px; cursor: pointer;
+    transition: background 0.25s;
+  }
+  .sana-hero .btn-outline-w:hover { background: rgba(255,255,255,0.12); }
+  @media (max-width: 768px) {
+    .sana-hero .hero-content { right: 5%; left: 5%; text-align: center; }
+    .sana-hero .hero-title { font-size: 26px; }
+    .sana-hero .hero-actions { justify-content: center; }
+  }
+</style>
+
+<section class="sana-hero s-block s-block--hero-slider s-block--full-bg wide-placeholder">
+  <salla-slider
+    id="main-slider-{{ position }}"
+    auto-play
+    static-when-single
+    slider-config='{"lazy":"false"}'
+    {{ component.slides|length > 1 ? '' : 'show-controls="false"' }}
+    type="fullwidth">
+    <div slot="items">
+      {% for slide in component.slides %}
+        <div class="swiper-slide w-full min-h-[300px] lg:min-h-[520px] bg-dark relative">
+          <div style="background-image: url({{ slide.image }});" class="{{ slide.without_overlay ? '' : 'overlay-bg' }} bg-cover bg-center absolute inset-0"></div>
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <div class="hero-eyebrow">✦ كولكشن 2025</div>
+            <h2 class="hero-title">
+              {% if slide.title %}
+                {{ slide.title }}
+              {% else %}
+                ارتقِ بمنزلك إلى <em>لمسة فاخرة</em>
+              {% endif %}
+            </h2>
+            {% if slide.description %}
+              <p class="hero-desc">{{ slide.description }}</p>
+            {% else %}
+              <p class="hero-desc">تشكيلة مختارة بعناية من أرقى مستلزمات المنزل والهدايا الفاخرة</p>
+            {% endif %}
+            <div class="hero-actions">
+              <a href="/collections" class="btn-outline-w">اكتشف أكثر</a>
+              <a href="/collections/featured" class="btn-gold">تسوق الآن</a>
+            </div>
+          </div>
         </div>
-    </salla-slider>
-</section> 
+      {% endfor %}
+    </div>
+  </salla-slider>
+</section>
